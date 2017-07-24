@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" ng-app="myapp" ng-strict-di>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="stylesheet.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+  <script src="app.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
+  </script>
+</head>
+
+<body ng-controller="main">
+  <div class="container-fluid">
+	<div class="jumbotron">
+    <h2>LLOC Counter for JavaScript Files</h2>
+    <h4>by Jacob van Maanen</h4>
+	</div>
+
+
+    <div class="btn-group" role="group">
+      <label class="btn btn-default btn-file">
+        Select File<input type="file" id="myFile" ng-model-instant accept=".js" onchange="angular.element(this).scope().fileLoad(event)" style="display: none;" multiple/>
+      </label>
+      
+      <label class="btn btn-default btn-file">
+        Select Folder<input type="file" id="myFile" ng-model-instant accept=".js" onchange="angular.element(this).scope().fileLoad(event)" style="display: none;" webkitdirectory multiple/>
+      </label>
+    </div>
+    
+
+    <button type="button" class="btn btn-default" ng-show="allFiles[0]" ng-click="countFiles()" >count files</button>
+
+    <button type="button" class="btn btn-default" ng-show="countedFiles" ng-click="doSave()">Save to txt file</button>
+
+    
+	<div ng-hide="countedFiles" ng-repeat="name in fileNames" ng-show="allFiles[0]">
+		File <span style="font-weight:bold">{{name}}</span> Loaded
+	</div>
+
+
+
+    <table class="table table-hover" ng-repeat="fileObject in countedFiles track by $index">
+      <caption>
+        <h1>File Name: {{fileObject.fileName}}</h1> <span class='badge'>Total Lines: {{fileObject.lines}}</span></caption>
+      <thead>
+        <tr>
+          <th>Classes <span class='badge'>{{fileObject.classLineTotal}} Lines</span></th>
+          <th>Method</th>
+          <th>Lines</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="classObject in fileObject.fileClasses track by $index">
+          <td>{{classObject.className}} <span class='badge'>{{classObject.classTotal}}</span></td>
+          <td>
+            <p ng-repeat="methodObject in classObject.classMethods track by $index">{{methodObject.methodName}}</td>
+          <td>
+            <p ng-repeat="methodObject in classObject.classMethods track by $index"> <span class='badge'>{{methodObject.lines}}</span></td>
+        </tr>
+        <tr>
+          <td>Avg Lines per Class: <span class='badge'>{{fileObject.classLineAvg}}</span></td>
+          <td>Avg Lines per Method: <span class='badge'>{{fileObject.overallMethodLineAvg}}</span></td>
+          <td>Global Count: <span class='badge'>{{fileObject.globalLines}}</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
+
+  </div>
+</body>
+
+</html>
